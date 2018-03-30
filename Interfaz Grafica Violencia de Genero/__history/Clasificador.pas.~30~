@@ -1,0 +1,583 @@
+unit Clasificador;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.OleCtrls,
+  SHDocVw, Vcl.ExtCtrls, JvExControls, JvOutlookBar, JvPageList,
+  JvNavigationPane, JvButton, JvComponentBase, Vcl.ComCtrls, JvExComCtrls,
+  JvComCtrls, Vcl.Grids, Vcl.Samples.Calendar, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
+  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+  FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
+  FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  Vcl.Imaging.jpeg, Vcl.DBCtrls, FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef,
+  Data.Cloud.CloudAPI, Data.Cloud.AmazonAPI, Data.FMTBcd, Data.SqlExpr,
+  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,System.Types, System.IOUtils,
+  Vcl.DBGrids;
+
+type
+  TForm1 = class(TForm)
+    FDConnection1: TFDConnection;
+    FDQuery1: TFDQuery;
+    Image1: TImage;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    WebBrowser1: TWebBrowser;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    JvPageControl1: TJvPageControl;
+    TabSheet1: TTabSheet;
+    Panel6: TPanel;
+    Label1: TLabel;
+    Panel7: TPanel;
+    Label2: TLabel;
+    Panel8: TPanel;
+    Label3: TLabel;
+    Panel9: TPanel;
+    Label4: TLabel;
+    selec_fecha: TDateTimePicker;
+    BitBtn3: TBitBtn;
+    TabSheet2: TTabSheet;
+    Panel10: TPanel;
+    Label5: TLabel;
+    combo_relacionVA: TComboBox;
+    Panel11: TPanel;
+    Label6: TLabel;
+    combo_estadoV: TComboBox;
+    Panel12: TPanel;
+    Label7: TLabel;
+    combo_estadoA: TComboBox;
+    Panel13: TPanel;
+    Label8: TLabel;
+    combo_denunciaPrev: TComboBox;
+    Panel14: TPanel;
+    Label9: TLabel;
+    combo_denunciaPost: TComboBox;
+    Panel15: TPanel;
+    Label10: TLabel;
+    combo_tipoArma: TComboBox;
+    Panel25: TPanel;
+    Label21: TLabel;
+    combo_tipoViolencia: TComboBox;
+    Panel26: TPanel;
+    Label22: TLabel;
+    combo_agresorReinc: TComboBox;
+    BitBtn4: TBitBtn;
+    TabSheet3: TTabSheet;
+    Panel16: TPanel;
+    Label11: TLabel;
+    combo_edadV: TComboBox;
+    Panel17: TPanel;
+    Label12: TLabel;
+    combo_hijosV: TComboBox;
+    Panel18: TPanel;
+    Label13: TLabel;
+    combo_nacionalidadV: TComboBox;
+    Panel19: TPanel;
+    Label14: TLabel;
+    combo_sexoV: TComboBox;
+    Panel20: TPanel;
+    Label15: TLabel;
+    text_nacionalidadV: TEdit;
+    BitBtn5: TBitBtn;
+    TabSheet4: TTabSheet;
+    Panel21: TPanel;
+    Label16: TLabel;
+    combo_edadA: TComboBox;
+    Panel22: TPanel;
+    Label17: TLabel;
+    combo_sexoA: TComboBox;
+    Panel23: TPanel;
+    Label18: TLabel;
+    combo_nacionalidadA: TComboBox;
+    Panel24: TPanel;
+    Label19: TLabel;
+    combo_hijosA: TComboBox;
+    Panel27: TPanel;
+    Label20: TLabel;
+    text_nacionalidadA: TEdit;
+    Panel28: TPanel;
+    BitBtn6: TBitBtn;
+    URL: TEdit;
+    Panel29: TPanel;
+    BitBtn2: TBitBtn;
+    Image2: TImage;
+    Panel30: TPanel;
+    Image3: TImage;
+    Image4: TImage;
+    Panel31: TPanel;
+    Image5: TImage;
+    Panel32: TPanel;
+    Panel33: TPanel;
+    BitBtn1: TBitBtn;
+    BitBtn7: TBitBtn;
+    Label23: TLabel;
+    FDConnection2: TFDConnection;
+    FDQuery2: TFDQuery;
+    PruebaConnection: TFDConnection;
+    FDConnection3: TFDConnection;
+    FDQuery3: TFDQuery;
+    FDQuery4: TFDQuery;
+    FDConnection4: TFDConnection;
+    DataSource1: TDataSource;
+    DataSource2: TDataSource;
+    DataSource3: TDataSource;
+    combo_ccaa: TComboBox;
+    combo_provincia: TComboBox;
+    combo_Municipio: TComboBox;
+    procedure FormCreate(Sender: TObject);
+    procedure Guardar_locaClick(Sender: TObject);
+    procedure Guardar_InformcionClick(Sender: TObject);
+    procedure GuardarAgreClick(Sender: TObject);
+    procedure Guardar_VictimaClick(Sender: TObject);
+    procedure BitBtn7Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure combo_provinciaEnter(Sender: TObject);
+    procedure combo_MunicipioEnter(Sender: TObject);
+    procedure combo_ccaaChange(Sender: TObject);
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  array_urls: TStringDynArray;
+  edad:String;
+  sexo:String;
+  nacionalidad:String;
+  hijos:String;
+  iniciales:String;
+  noticia_index:integer;
+  array_Prov:array[0..51] of Integer;
+implementation
+
+{$R *.dfm}
+
+
+procedure TForm1.GuardarAgreClick(Sender: TObject); //Guardar la info del agresor
+begin
+  edad:=combo_edadA.Text;
+  sexo:=combo_sexoA.Text;
+  nacionalidad:=combo_nacionalidadA.Text;
+  hijos:=combo_hijosA.Text;
+  iniciales:=text_nacionalidadA.Text;
+  if(edad<>'') then begin
+            if (sexo<>'') then begin
+              if (nacionalidad<>'') then begin
+                if(hijos<>'')then begin
+                try
+                    FDQuery2.Connection:=FDConnection2;
+                    FDQuery2.Active := False;
+                    FDQuery2.SQL.Text := 'INSERT INTO Agresor(ID_Noticia, Edad, Sexo,Nacionalidad,N_Hijos,Iniciales) VALUES (:ID_Noticia, :Edad, :Sexo,:Nacionalidad,:N_Hijos:Iniciales)';
+                    FDQuery2.Params.ParamByName('ID_Noticia').Value := noticia_index;
+                    FDQuery2.Params.ParamByName('Edad').Value := edad;
+                    FDQuery2.Params.ParamByName('Sexo').Value := sexo;
+                    FDQuery2.Params.ParamByName('Nacionalidad').Value := nacionalidad;
+                    FDQuery2.Params.ParamByName('N_Hijos').Value := hijos;
+                    FDQuery2.Params.ParamByName('Iniciales').Value := iniciales;
+                    FDQuery2.Active := True;
+                    FDQuery2.ExecSQL;
+                    ShowMessage('Edad: '+edad+' Sexo: '+sexo+' nacionalidad: '+nacionalidad+
+                      'Hijos: '+hijos+' Iniciales: '+iniciales );
+                finally
+                  FDQuery2.Free;
+                end;
+                end
+                else begin
+                  ShowMessage('Error al introducir los hijos');
+                end;
+
+              end
+              else begin
+              ShowMessage('Error al introducir la nacionalidad');
+              end;
+            end
+             else begin
+            ShowMessage('Error al introducir el sexo');
+            end;
+          end
+      else begin
+          ShowMessage('Error al introducir la edad');
+      end;
+
+
+end;
+
+procedure TForm1.Guardar_locaClick(Sender: TObject);  //
+var
+  fecha:  TDate;
+  CCAA: String;
+  provincia:String;
+  localidad:String;
+begin
+   if selec_fecha.Checked then begin
+     fecha:=selec_fecha.Date;
+   end
+
+   else begin fecha:=StrToDate('31/12/2999');
+    ShowMessage('Advertencia: No se a guardado una fecha');
+   end;
+
+      CCAA:=combo_ccaa.Items[combo_ccaa.ItemIndex];
+      provincia:=combo_provincia.Items[combo_provincia.ItemIndex];
+      localidad:=combo_Municipio.Items[combo_Municipio.ItemIndex];
+      if CCAA<>'' then begin
+            if (provincia<>'') then begin
+              if (localidad<>'') then begin //En vez de nulo deveria ser no numeric
+              FDQuery2.Active := False;
+               ShowMessage('Guardamos CCAA: '+CCAA+' Provincia: '+provincia+' Municipio: '+localidad +' Fecha:' + datetostr(fecha) );
+             try
+              FDQuery2.Connection:=FDConnection2;
+              FDQuery2.SQL.Text := 'INSERT INTO Localizacion(ID_Noticia, Fecha, ID_CCAA,ID_Provincia,ID_Municipio) VALUES (:ID_Noticia, :Fecha, :ID_CCAA,:ID_Provincia,:ID_Municipio)';
+              FDQuery2.Params.ParamByName('ID_Noticia').Value := noticia_index;
+              FDQuery2.Params.ParamByName('Fecha').Value := fecha;
+              FDQuery2.Params.ParamByName('ID_CCAA').Value := combo_ccaa.ItemIndex;
+              FDQuery2.Params.ParamByName('ID_Provincia').Value := array_Prov[combo_provincia.ItemIndex];
+              FDQuery2.Params.ParamByName('ID_Municipio').Value := localidad;
+              FDQuery2.Active := True;
+              FDQuery2.ExecSQL;
+             finally
+               FDQuery2.Free;
+             end;
+              ShowMessage('Guardamos CCAA: '+CCAA+' Provincia: '+provincia+' Municipio: '+localidad +' Fecha:' + datetostr(fecha) );
+              end
+              else begin
+               try
+              FDQuery2.Connection:=FDConnection2;
+              FDQuery2.Active := False;
+              FDQuery2.SQL.Text := 'INSERT INTO Localizacion(ID_Noticia, Fecha, ID_CCAA,ID_Provincia,ID_Municipio) VALUES (:ID_Noticia, :Fecha, :ID_CCAA,:ID_Provincia,:ID_Municipio)';
+              FDQuery2.Params.ParamByName('ID_Noticia').Value := noticia_index;
+              FDQuery2.Params.ParamByName('Fecha').Value := fecha;
+              FDQuery2.Params.ParamByName('ID_CCAA').Value := combo_ccaa.ItemIndex;
+              FDQuery2.Params.ParamByName('ID_Provincia').Value := array_Prov[combo_provincia.ItemIndex];
+              FDQuery2.Params.ParamByName('ID_Municipio').Value := -1;
+              ShowMessage('Advertencia :No se guarda la localidad');
+              FDQuery2.Active := True;
+              FDQuery2.ExecSQL;
+               finally
+                FDQuery2.Free;
+               end;
+              end;
+            end
+             else begin
+              try
+              FDQuery2.Connection:=FDConnection2;
+             FDQuery2.Active := False;
+              FDQuery2.SQL.Text := 'INSERT INTO Localizacion(ID_Noticia, Fecha, ID_CCAA,ID_Provincia,ID_Municipio) VALUES (:ID_Noticia, :Fecha, :ID_CCAA,:ID_Provincia,:ID_Municipio)';
+              FDQuery2.Params.ParamByName('ID_Noticia').Value := noticia_index;
+              FDQuery2.Params.ParamByName('Fecha').Value := fecha;
+              FDQuery2.Params.ParamByName('ID_CCAA').Value := combo_ccaa.ItemIndex;
+              FDQuery2.Params.ParamByName('ID_Provincia').Value := -1;
+              FDQuery2.Params.ParamByName('ID_Municipio').Value := -1;
+              FDQuery2.Active := True;
+              FDQuery2.ExecSQL;
+            ShowMessage('Advertencia: No se guardara la localidad ni la provincia');
+              finally
+               FDQuery2.Free;
+              end;
+            end;
+          end
+      else begin
+          ShowMessage('Error al introducir la CCAA');
+      end;
+
+
+end;
+
+procedure TForm1.Guardar_InformcionClick(Sender: TObject);
+var
+victima_agresor:String;
+  estado_Victima:String;
+  estado_Agresor:String;
+  denuncia_previa:String;
+  denuncia_posterior:String;
+  reincidente:String;
+  tipo_violencia:String;
+  tipo_arma:String;
+begin
+  victima_agresor:=combo_relacionVA.Text;
+  estado_Victima:=combo_estadoV.Text;
+  estado_Agresor:=combo_estadoA.Text;
+  denuncia_previa:=combo_denunciaPrev.Text;
+  denuncia_posterior:=combo_denunciaPost.Text;
+  reincidente:=combo_agresorReinc.Text;
+  tipo_violencia:=combo_tipoViolencia.Text;
+  tipo_arma:=combo_tipoArma.Text;
+  if victima_agresor<>'' then begin
+            if (estado_Victima<>'') then begin
+              if (estado_Agresor<>'') then begin
+                if denuncia_previa<>'' then begin
+                  if (denuncia_posterior<>'') then begin
+                    if (reincidente<>'') then begin
+                      if(tipo_violencia<>'')then begin
+                        if(tipo_arma<>'')then begin
+                         try
+                            FDQuery2.Connection:=FDConnection2;
+                            FDQuery2.Active := False;
+                            FDQuery2.SQL.Text := 'INSERT INTO Informacion(ID_Noticia, RelacionV_A, EstadoV,EstadoA,DenunciaPrev,DenunciaPost,AReincidente,Tipo_Violencia,Tipo_Arma)'
+                            +' VALUES (:ID_Noticia, :RelacionV_A, :EstadoV,:EstadoA,:DenunciaPrev,:DenunciaPost,:AReincidente,:Tipo_Violencia,:Tipo_Arma)';
+                            FDQuery2.Params.ParamByName('ID_Noticia').Value := noticia_index;
+                            FDQuery2.Params.ParamByName('RelacionV_A').Value := victima_agresor;
+                            FDQuery2.Params.ParamByName('EstadoV').Value := estado_Victima;
+                            FDQuery2.Params.ParamByName('EstadoA').Value := estado_Agresor;
+                            FDQuery2.Params.ParamByName('DenunciaPrev').Value := denuncia_previa;
+                            FDQuery2.Params.ParamByName('DenunciaPost').Value := denuncia_posterior;
+                            FDQuery2.Params.ParamByName('AReincidente').Value :=  reincidente;
+                            FDQuery2.Params.ParamByName('Tipo_Violencia').Value := tipo_violencia;
+                            FDQuery2.Params.ParamByName('Tipo_Arma').Value := tipo_arma;
+                            ShowMessage(FDQuery2.SQL.Text);
+                            FDQuery2.Active := True;
+                             FDQuery2.ExecSQL;
+                             ShowMessage('Guardamos victima_agresor: '+victima_agresor
+                             +' estado_Victima: '+estado_Victima+' estado_Agresor: '+estado_Agresor
+                             +'denuncia_previa: '+denuncia_previa
+                             +' denuncia_posterior: '+denuncia_posterior+' reincidente: '+reincidente);
+                        finally
+                        FDQuery2.Free;
+                        end;
+                        end
+                        else begin
+                          ShowMessage('Error al introducir el tipo de arma ');
+                        end;
+                      end
+                      else begin
+                        ShowMessage('Error al introducir el tipo de violencia');
+                      end;
+                    end
+                    else begin
+                    ShowMessage('Error al introducir el si el agresor es reincidente');
+                    end;
+                  end
+                   else begin
+                  ShowMessage('Error al introducir si existe denuncia posterior');
+                  end;
+                end
+            else begin
+                ShowMessage('Error al introducir si existe denuncia previa');
+      end;
+              end
+              else begin
+              ShowMessage('Error al introducir el estado del agresor');
+              end;
+            end
+             else begin
+            ShowMessage('Error al introducir el estado de la victima');
+            end;
+          end
+      else begin
+          ShowMessage('Error al introducir la relacion de la victima con el agresor');
+      end;
+end;
+
+procedure TForm1.Guardar_VictimaClick(Sender: TObject); //Guardar datos victima
+begin
+  edad:=combo_edadV.Text;
+  sexo:=combo_sexoV.Text;
+  nacionalidad:=combo_nacionalidadV.Text;
+  hijos:=combo_hijosV.Text;
+  iniciales:=text_nacionalidadV.Text;
+  if(edad<>'') then begin
+            if (sexo<>'') then begin
+              if (nacionalidad<>'') then begin
+                if(hijos<>'')then begin
+                try
+                  FDQuery2.Connection:=FDConnection2;
+                  FDQuery2.Active := False;
+                  FDQuery2.SQL.Text := 'INSERT INTO Victima(ID_Noticia, Edad, Sexo,Nacionalidad,N_Hijos,Iniciales) VALUES (:ID_Noticia, :Edad, :Sexo,:Nacionalidad,:N_Hijos,:Iniciales)';
+                  FDQuery2.Params.ParamByName('ID_Noticia').Value := noticia_index;
+                   FDQuery2.Params.ParamByName('Edad').Value := edad;
+                  FDQuery2.Params.ParamByName('Sexo').Value := sexo;
+                   FDQuery2.Params.ParamByName('Nacionalidad').Value := nacionalidad;
+                  FDQuery2.Params.ParamByName('N_Hijos').Value := hijos;
+                  FDQuery2.Params.ParamByName('Iniciales').Value := iniciales;
+                  FDQuery2.Active := True;
+                  FDQuery2.ExecSQL;
+                  ShowMessage('Edad: '+edad+' Sexo: '+sexo+' nacionalidad: '+nacionalidad+
+                  'Hijos: '+hijos+' Iniciales: '+iniciales );
+                finally
+                FDQuery2.Free;
+                end;
+                end
+                else begin
+                  ShowMessage('Error al introducir los hijos');
+                end;
+
+              end
+              else begin
+              ShowMessage('Error al introducir la nacionalidad');
+              end;
+            end
+             else begin
+            ShowMessage('Error al introducir el sexo');
+            end;
+          end
+      else begin
+          ShowMessage('Error al introducir la edad');
+      end;
+
+
+end;
+
+
+procedure TForm1.BitBtn1Click(Sender: TObject);
+begin
+if(noticia_index=Length(array_urls)-1) then begin
+    ShowMessage('Esta en la ultima noticia');
+end
+else begin
+    noticia_index:=noticia_index+1;
+    URL.Text := array_urls[noticia_index];
+    WebBrowser1.Navigate(WideString(URL.Text), 0, 0, 0, 0);
+end;
+end;
+
+procedure TForm1.BitBtn7Click(Sender: TObject);
+begin
+if(noticia_index=0) then begin
+    ShowMessage('Esta en la primera noticia');
+end
+else begin
+    noticia_index:=noticia_index-1;
+    URL.Text := array_urls[noticia_index];
+    WebBrowser1.Navigate(WideString(URL.Text), 0, 0, 0, 0);
+end;
+end;
+
+procedure TForm1.combo_ccaaChange(Sender: TObject);
+begin
+showmessage('onchange');
+end;
+
+procedure TForm1.combo_MunicipioEnter(Sender: TObject);
+
+
+begin
+
+ if(combo_provincia.ItemIndex>=0) then begin
+  //ShowMessage('Nombre Provincia '+ inttostr(array_Prov[combo_provincia.ItemIndex]));
+  FDQuery2.Active := False;
+
+  FDQuery2.SQL.Text := 'Select nombre from Municipios where ID_CCAA like '+ inttostr(combo_ccaa.ItemIndex+1)+' and ID_Prov like '+inttostr(array_Prov[combo_provincia.ItemIndex]) ;
+   FDQuery2.Active := True;
+   combo_Municipio.Clear;
+   While not FDQuery2.Eof do
+   begin
+      combo_Municipio.Items.Add(FDQuery2.Fields[0].AsString);
+       FDQuery2 .Next;
+   end;
+   combo_provincia.Repaint;
+   FDQuery2.Active := False;
+  end
+  else begin ShowMessage('Introduzca primero la provincia');
+  end;
+end;
+
+procedure TForm1.combo_provinciaEnter(Sender: TObject);
+var i:integer;
+begin
+  if(combo_ccaa.ItemIndex>=0) then begin
+  FDQuery3.SQL.Text := 'Select Nombre, ID_Prov from Provincias where ID_CCAA like '+inttostr(combo_ccaa.ItemIndex+1);
+   FDQuery3.Active := True;
+   combo_provincia.Clear;
+   i:=0;
+   While not FDQuery3.Eof do
+   begin
+      combo_provincia.Items.Add(FDQuery3.Fields[0].AsString);
+      array_Prov[i]:=FDQuery3.Fields[1].AsInteger;
+       FDQuery3 .Next;
+   end;
+   combo_provincia.Repaint;
+   FDQuery3.Active := False;
+  end
+  else begin ShowMessage('Introduzca primero la comunidad autonoma');
+  end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+{*
+var
+array_noticias: TStringDynArray;
+sPath: String;
+i: Integer;
+F: TextFile;
+sLinea: String;
+aux:String;
+
+begin
+//SetLength(Array_dinamico, 5);
+//array_URL[1]:= 'www.elmundo.es/opinion/2018/02/08/5a7b2e2922601dcc3d8b45eb.html';
+
+sPath:= '.\Noticias';
+array_noticias := tdirectory.getfiles(sPath);
+
+
+for i := 0 to Length(array_noticias)-1 do
+
+  begin
+  AssignFile( F, array_noticias[i]);
+  Reset( F );
+
+    while not Eof( F ) do
+    begin
+      ReadLn( F, sLinea );
+      SetLength(array_urls, Length(array_urls)+1);
+      array_urls[High(array_urls)] := sLinea;
+    end;
+
+    CloseFile( F );
+
+    end;
+    noticia_index:=0;
+    URL.Text := array_urls[noticia_index];
+    WebBrowser1.Navigate(WideString(URL.Text), 0, 0, 0, 0);
+    *}
+begin
+  try
+    FDQuery3.Active := False;
+    {*
+    DataSource1.DataSet:=FDQuery2;
+    combo_ccaa.DataSource:=DataSource1;
+    combo_ccaa.DataField:='Nombre';
+      *}
+    FDQuery3.SQL.Text := 'Select Nombre from Comunidades';
+   FDQuery3.Active := True;
+   While not FDQuery3.Eof do
+  begin
+      combo_ccaa.Items.Add(FDQuery3.Fields[0].AsString);
+       FDQuery3 .Next;
+   end;
+   FDQuery3.Active := False;
+
+  finally
+     FDQuery3.Free;
+  end;
+    try
+    FDQuery4.Active := False;
+    FDQuery4.SQL.Text := 'Select URL from Noticias';
+    FDQuery4.Active := True;
+    while not  FDQuery4.Eof do
+    begin
+
+      SetLength(array_urls, Length(array_urls)+1);
+      array_urls[High(array_urls)]:=FDQuery4.Fields[0].AsString;
+      FDQuery4.Next;
+    end;
+    FDQuery4.Active := False;
+    finally
+      FDQuery4.Free;
+    end;
+
+    noticia_index:=0;
+    URL.Text := array_urls[noticia_index];
+    WebBrowser1.Navigate(WideString(URL.Text), 0, 0, 0, 0);
+
+end;
+
+end.
