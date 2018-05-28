@@ -1,0 +1,93 @@
+
+.ui-icon-icon-home{/*cambiar icono cabecera*/
+	background-image: url("./img/icons/home.svg");
+  background-color: transparent;
+  background-size:18px 18px;
+  background-repeat: no-repeat;
+
+}
+.ui-icon-icon-info{/*cambiar icono cabecera*/
+	background-image: url("./img/icons/informacion.svg");
+  background-color: transparent;
+  background-size:18px 18px;
+  background-repeat: no-repeat;
+
+}
+.ui-icon-icon-mapa{/*cambiar icono cabecera*/
+	background-image: url("./img/icons/geolocalizacion.svg");
+  background-color: transparent;
+  background-size:18px 18px;
+  background-repeat: no-repeat;
+
+}
+.ui-icon-icon-mapaCalor{/*cambiar icono cabecera*/
+	background-image: url("./img/icons/mapaCalor.svg");
+  background-color: transparent;
+  background-size:18px 18px;
+  background-repeat: no-repeat;
+
+}
+.ui-icon-icon-fecha{/*cambiar icono cabecera*/
+	background-image: url("./img/icons/fecha.svg");
+  background-color: transparent;
+  background-size:18px 18px;
+  background-repeat: no-repeat;
+
+}
+.ui-icon-icon-relacion{/*cambiar icono cabecera*/
+	background-image: url("./img/icons/relacionV_A.svg");
+  background-color: transparent;
+  background-size:18px 18px;
+  background-repeat: no-repeat;
+
+}
+
+#MyFooter {/* botones cabecera*/
+    margin-top: 10px;
+    background:#9856af;
+}
+#cabecera{/*fondo de la cabecera*/
+  margin: 2px 0px 20px 0px;
+
+  background:#9856af;
+  /*background-image: url("./img/mano.png");
+  background-repeat: no-repeat;
+  background-color: #9856af;
+  background-attachment: fixed;
+  background-position:top;
+  background-size:100% 40%;*/
+}
+
+.botonesMenuCabecera{/*Posicion botones cabecera*/
+  margin: 30px 0px 2px 0px;
+}
+.ui-navbar > ul > li > a > .ui-btn-inner > .ui-btn-text/*Color texto botones navegacion cabecera*/
+ {
+   color:#9856af;
+}
+.ui-header > .ui-btn, .ui-footer > .ui-btn{
+    display: inline-block;
+    margin: 10px 2px 2px 2px;
+}
+.ui-title{
+  color:#fcf76c;
+  margin: 60px 2px 2px 2px;
+}
+#titulo {
+    min-height: 1.1em;
+    text-align: center;
+    font-size: 16px;
+    display: block;
+    margin: 30px 10% .8em;
+    padding: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    outline: 0!important;
+}
+.carousel-inner > .item > img {/*cenrado de imagenes en el carrusel*/
+    margin: 0 auto;
+}
+.carousel .item {
+	height : 375px;
+}
