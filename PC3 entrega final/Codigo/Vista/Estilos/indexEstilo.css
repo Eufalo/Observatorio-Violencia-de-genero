@@ -1,0 +1,12 @@
+p {
+    text-align: justify;
+    text-justify: inter-word;
+    font-size: 18px;
+    margin-bottom: :20px;
+}
+.carousel-control.right{
+  background: transparent;
+}
+.carousel-control.left{
+  background: transparent;
+}

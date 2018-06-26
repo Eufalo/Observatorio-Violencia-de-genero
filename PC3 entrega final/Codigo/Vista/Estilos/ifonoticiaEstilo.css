@@ -1,0 +1,34 @@
+
+iframe{
+	width:100%;
+	height:615px;
+	margin: 0 auto;
+  display: block;
+}
+h2{
+	font-weight: bold;
+		color:#9856af;
+}
+.row{
+	margin-bottom: 10px;
+}
+h4{
+	color:#9856af;
+}
+@media screen and (max-width: 1024px) {/* Centrado tablet menor a 1024*/
+	iframe{
+		width:100%;
+		height:515px;
+		margin: 0 auto;
+	  display: block;
+	}
+}
+
+@media screen and (max-width: 414px) {/* Centrado en el movil menor a 414*/
+	iframe{
+		width:100% ;
+		height:415px;
+		margin: 0 auto;
+    display: block;
+	}
+}

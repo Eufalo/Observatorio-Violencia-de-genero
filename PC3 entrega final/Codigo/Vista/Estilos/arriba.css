@@ -1,0 +1,12 @@
+/*Boton subida al inicio*/
+.ir-arriba{
+    display: none;
+    padding: 20px;
+    background: #9856AF; 
+    font-size:20px ;
+    color: white;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}

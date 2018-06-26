@@ -1,0 +1,22 @@
+#map{
+	height: 500px;
+	width: 800px;
+	margin: auto;
+}
+
+@media screen and (max-width: 1024px) {/* Centrado tablet menor a 1024*/
+	#map{
+		height: 500px;
+		width: 800px;
+		margin: auto;
+	}
+}
+
+@media screen and (max-width: 414px) {/* Centrado en el movil menor a 414*/
+	#map{
+		height: 400px;
+		width: 300px;
+		margin: auto;
+	}
+	
+}

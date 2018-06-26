@@ -1,0 +1,11 @@
+#myChart{
+	animation: chartjs-render-animation 0.001s;
+
+}
+input.ui-input-text{
+	margin-top: 22px;
+}
+#myChartFechas{
+	width: 30vw;
+	height: 30vh;
+}
